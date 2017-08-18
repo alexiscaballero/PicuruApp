@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Picurú | Log in</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../../misc/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="../../misc/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="../../plugins/iCheck/square/blue.css">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="../../misc/html5shiv.min.js"></script>
+  <script src="../../misc/respond.min.js"></script>
+  <![endif]-->
+  <link rel="shortcut icon" href="/res/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/res/favicon.ico" type="image/x-icon">
+</head>
+<body class="hold-transition login-page container">
+<div>
+<div class="login-box">
+  <div class="login-logo">
+    <b>Picur<span style="color:#c91e08;">&uacute;</span></b>
+  </div>
+  <!-- /.login-logo -->
+  <div class="login-box-body">
+    <p class="login-box-msg">Ingrese sus datos para comenzar!</p>
+
+    <form action="/api/authenticate" method="post" id="formLogin">
+      <div class="form-group has-feedback" id="divUsuario">
+        <input type="text" class="form-control" placeholder="Usuario" name="usuario" id="usuario">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        <span id="spanUsuario" class="help-block hidden">Ingrese su usuario</span>
+      </div>
+      <div class="form-group has-feedback" id="divClave">
+        <input type="password" class="form-control" placeholder="Contraseña" name="clave" id="clave">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        <span id="spanClave" class="help-block hidden">Ingrese su contraseña</span>
+      </div>
+      <div class="row">
+        <!-- /.col -->
+        <div class="col-xs-12">
+          <button type="button" class="btn btn-primary btn-block btn-flat" onclick="chequearForm();">Comenzar</button>
+        </div>
+        <!-- /.col -->
+      </div>
+      {{#message}}
+      <div class="form-group has-error">
+        <div class="col-xs-12 separador"></div>
+        <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{{message}}</label>
+      </div>
+      {{/message}}
+    </form>
+
+  </div>
+  <!-- /.login-box-body -->
+</div>
+</div>
+<!-- /.login-box -->
+
+<!-- jQuery 2.2.3 -->
+<script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="../../bootstrap/js/bootstrap.min.js"></script>
+<!-- iCheck -->
+<script src="../../plugins/iCheck/icheck.min.js"></script>
+<script>
+  function chequearForm() {
+    var usuario = $("#usuario").val();
+    var clave = $("#clave").val();
+    var error = false;
+    if (usuario == null || usuario == "") {
+      var error = true;
+      $("#divUsuario").removeClass("has-success");
+      $("#divUsuario").addClass("has-error");
+      $("#spanUsuario").removeClass("hidden");
+    } else {
+      $("#divUsuario").addClass("has-success");
+      $("#divUsuario").removeClass("has-error");
+      $("#spanUsuario").addClass("hidden");
+    }
+    if (clave == null || clave == "") {
+      var error = true;
+      $("#divClave").removeClass("has-success");
+      $("#divClave").addClass("has-error");
+      $("#spanClave").removeClass("hidden");
+    } else {
+      $("#divClave").addClass("has-success");
+      $("#divClave").removeClass("has-error");
+      $("#spanClave").addClass("hidden");
+    }
+    if (error) {
+      return false;
+    } else {
+      $("#formLogin").submit();
+    }
+  }
+  $(function () {
+    $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%' // optional
+    });
+  });
+</script>
+<style type="text/css">
+  .login-box {
+    background: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  .hidden {
+    display: none;
+  }
+  .separador {
+    min-height: 5px;
+  }
+</style>
+<style type="text/css">
+  .container {
+    background: linear-gradient(234deg, #742424, #f52525);
+    background-size: 400% 400%;
+
+    -webkit-animation: AnimationName 30s ease infinite;
+    -moz-animation: AnimationName 30s ease infinite;
+    animation: AnimationName 30s ease infinite;
+
+    @-webkit-keyframes AnimationName {
+        0%{background-position:0% 50%}
+        50%{background-position:100% 50%}
+        100%{background-position:0% 50%}
+    }
+    @-moz-keyframes AnimationName {
+        0%{background-position:0% 50%}
+        50%{background-position:100% 50%}
+        100%{background-position:0% 50%}
+    }
+    @keyframes AnimationName { 
+        0%{background-position:0% 50%}
+        50%{background-position:100% 50%}
+        100%{background-position:0% 50%}
+    }
+  }
+</style>
+</body>
+</html>

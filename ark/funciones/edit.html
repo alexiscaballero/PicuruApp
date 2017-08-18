@@ -1,0 +1,134 @@
+<div class="row">
+  <!-- left column -->
+  <div class="col-md-12">
+    <!-- general form elements -->
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">Editar Función</h3>
+      </div>
+      <!-- /.box-header -->
+      <!-- form start -->
+      <form role="form" id="formEdit">
+        <input type="hidden" name="FUN_ID" value="{{#fun}}{{FUN_ID}}{{/fun}}">
+        <input type="hidden" name="OPERACION" value="EDITAR">
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group" id="div_FUN_TITULO">
+                <label for="FUN_TITULO">T&iacute;tulo </label>
+                <input type="text" class="form-control" id="FUN_TITULO" name="FUN_TITULO" placeholder="Ingrese un t&iacute;tulo para la funci&oacute;n" value="{{#fun}}{{FUN_TITULO}}{{/fun}}" maxlength="40">
+                <span id="span_FUN_TITULO" class="help-block hidden"></span>
+              </div>
+              <div class="form-group" id="div_FUN_DESCRIPCION">
+                <label for="FUN_DESCRIPCION">Descripci&oacute;n </label>
+                <input type="text" class="form-control" id="FUN_DESCRIPCION" name="FUN_DESCRIPCION" placeholder="Ingrese una descripci&oacute;n para la funci&oacute;n" value="{{#fun}}{{FUN_DESCRIPCION}}{{/fun}}" maxlength="200">
+                <span id="span_FUN_DESCRIPCION" class="help-block hidden"></span>
+              </div>
+              <div class="form-group" id="div_FUN_RUTA">
+                <label for="FUN_RUTA">Ruta </label>
+                <input type="text" class="form-control" id="FUN_RUTA" name="FUN_RUTA" placeholder="Ingrese una ruta para la funci&oacute;n" value="{{#fun}}{{FUN_RUTA}}{{/fun}}" maxlength="100">
+                <span id="span_FUN_RUTA" class="help-block hidden"></span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group" id="div_FUN_ICONO">
+                <label>&Iacute;cono </label>
+                <input type="text" class="form-control" id="FUN_ICONO" name="FUN_ICONO" placeholder="Ingrese un &iacute;cono para la funci&oacute;n" value="{{#fun}}{{FUN_ICONO}}{{/fun}}" maxlength="40">
+                <span id="span_FUN_ICONO" class="help-block hidden"></span>
+              </div>
+              <div class="checkbox" id="div_FUN_ES_PADRE">
+                <label>
+                  <input type="checkbox" name="FUN_ES_PADRE" id="FUN_ES_PADRE" {{#fun}}{{#FUN_ES_PADRE}}checked{{/FUN_ES_PADRE}}{{/fun}}><b> Es padre </b>
+                </label>
+                <span id="span_FUN_ES_PADRE" class="help-block hidden"></span>
+              </div>
+              <div class="form-group" id="div_FUN_PADRE_ID">
+                <label>Funci&oacute;n Padre</label>
+                <select class="form-control select2" name="FUN_PADRE_ID" id="FUN_PADRE_ID" style="width: 100%;">
+                </select>
+                <span id="span_FUN_PADRE_ID" class="help-block hidden"></span>
+              </div>
+              <div class="form-group" id="div_FUN_ORDEN">
+                <label>Orden </label>
+                <input type="text" class="form-control" id="FUN_ORDEN" name="FUN_ORDEN" placeholder="Ingrese un orden para la funci&oacute;n" value="{{#fun}}{{FUN_ORDEN}}{{/fun}}" maxlength="4">
+                <span id="span_FUN_ORDEN" class="help-block hidden"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-body -->  
+        <div class="box-footer"> 
+          <button type="button" class="btn btn-primary" onclick="validarForm();">Guardar Cambios</button>      
+        </div>
+      </form>
+    </div>
+    <!-- /.box -->
+  </div>
+</div>
+<!-- /.row -->
+<script>
+  $(function () {
+    $(".select2").select2();
+
+    //ajax funciones padre
+    $.ajax({
+      url: "/api/ajax/funcionesPadre"
+    }).done(function(data) {
+      $('#FUN_PADRE_ID').append($('<option>', {
+          value: -1,
+          text: "Ninguna"
+        }));
+      $(data).each(function(funcion) {
+        $('#FUN_PADRE_ID').append($('<option>', {
+          value: this.FUN_ID,
+          text: this.FUN_TITULO
+        }));
+      });
+      //setear la funcion padre de la funcion
+      {{#fun}}
+      $('#FUN_PADRE_ID').val({{FUN_PADRE_ID}});
+      {{/fun}}
+    });
+
+    $("#FUN_ORDEN").keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+             // Allow: Ctrl/cmd+A
+            (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: Ctrl/cmd+C
+            (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: Ctrl/cmd+X
+            (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+  });
+
+  function validarForm() {
+    $.ajax({
+      url: "/api/ajax/validarFormEditFuncion",
+      type: "POST",
+      data: $("#formEdit").serialize()
+    }).done(function(errors) {
+      $('div[id^="div_"]').removeClass("has-error");
+      $('span[id^="span_"]').addClass("hidden");
+      if (errors.length == 0) {
+        $("#formEdit").attr("action","/api/logic/funciones");
+        $("#formEdit").submit();
+      } else {
+        $(errors).each(function(funcion) {
+          $("#div_"+this.campo).addClass("has-error");
+          $("#span_"+this.campo).removeClass("hidden");
+          $("#span_"+this.campo).text(this.msj);
+        });  
+      }
+    });
+  }
+</script>

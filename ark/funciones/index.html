@@ -1,0 +1,92 @@
+<div class="row">
+  <div class="col-xs-12">
+    {{#msj}}
+    <div class="alert alert-success alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h5>
+        <i class="icon fa fa-check"></i><b> &Eacute;xito! </b>Los cambios fueron guardados.
+      </h5>
+    </div>
+    {{/msj}}
+    <div class="box">
+      <!-- /.box-header -->
+      <div class="box-body">
+        <table id="example1" class="table table-bordered table-striped table-responsive display responsive " width="100%">
+          <thead>
+          <tr>
+            <th data-priority="9" class="text-center">ID Funci&oacute;n</th>
+            <th data-priority="1" class="text-center">T&iacute;tulo</th>
+            <th data-priority="10" class="text-center">Descripci&oacute;n</th>
+            <th data-priority="5" class="text-center">&Iacute;cono</th>
+            <th data-priority="4" class="text-center">Ruta</th>
+            <th data-priority="6" class="text-center">Funci&oacute;n Padre</th>
+            <th data-priority="8" class="text-center">Es Padre</th>
+            <th data-priority="7" class="text-center">Orden</th>
+            <th data-priority="2" class="text-center">Editar</th>
+            <th data-priority="3" class="text-center">Permisos</th>
+          </tr>
+          </thead>
+          <tbody>
+          {{#funciones}}
+          <tr>
+            <td class="text-center">{{FUN_ID}}</td>
+            <td>{{FUN_TITULO}}</td>
+            <td>{{FUN_DESCRIPCION}}</td>
+            <td>{{FUN_ICONO}}</td>
+            <td>{{FUN_RUTA}}</td>
+            <td class="text-center">{{FUN_PADRE_ID}}</td>
+            <td class="text-center">{{FUN_ES_PADRE}}</td>
+            <td class="text-center">{{FUN_ORDEN}}</td>
+            <td class="text-center">
+              <a class="btn btn-warning btn-sm" href="/api/logic/funciones?FUN_ID={{FUN_ID}}">
+                <i class="fa fa-edit"></i> Editar
+              </a>
+            </td>
+            <td class="text-center">
+              <a class="btn btn-info btn-sm">
+                <i class="fa fa-edit"></i> Editar
+              </a>
+            </td>
+          </tr>
+          {{/funciones}}
+          </tbody>
+          <tfoot>
+          </tfoot>
+        </table>
+        <a class="btn btn-success btn-sm" href="/api/logic/funciones?OPERACION=AGREGAR">
+          <i class="fa fa-plus"></i> Agregar Funci&oacute;n
+        </a>
+      </div>
+      
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+  </div>
+  <!-- /.col -->
+</div>
+<!-- /.row -->
+<script>
+  function editarFuncion(id) {
+    $('<form action="/api/logic/funciones"><input type="hidden" value="'+id+'" name="FUN_ID"></form>')
+      .appendTo('body').submit();
+  }
+  $(function () {
+    $("#example1").DataTable({
+      "language": {
+            "lengthMenu": "Mostrar _MENU_ resultados por p\ágina",
+            "zeroRecords": "No se encontraron resultados",
+            "info": "Mostrando p\ágina _PAGE_ de _PAGES_",
+            "infoEmpty": "No hay resultados disponibles",
+            "infoFiltered": "(filtrados de un total de _MAX_ resultados)",
+            "sSearch": "Buscar:",
+            "oPaginate": {
+              "sFirst":    "Primero",
+              "sLast":     "Último",
+              "sNext":     "Siguiente",
+              "sPrevious": "Anterior"
+            }
+        },
+      responsive: true
+    });
+  });
+</script>

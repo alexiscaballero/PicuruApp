@@ -1,0 +1,20 @@
+{
+  "name": "GeoBus-Server",
+  "version": "0.0.1",
+  "description": "API-REST",
+  "main": "server.js",
+  "author": "Alexis Octavio Caballero",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4",
+    "jsonwebtoken": "^7.1.9",
+    "method-override": "^2.3.6",
+    "morgan": "^1.7.0",
+    "pg": "^4.4.3",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^3.15.1"
+  },
+  "devDependencies": {
+    "cookie-parser": "^1.4.3"
+  }
+}
